@@ -19,13 +19,13 @@ The service is implemented using the Flask framework, the REST API server is bui
 
 Go to project directory:
 ```
-$ cd flask-retailpulse
+$ cd flask-imagejobs
 ```
 
 Create a virtual environment:
 ```
-$ virtualenv flask-retailpulse
-$ source flask-retailpulse/bin/activate
+$ virtualenv flask-imagejobs
+$ source flask-imagejobs/bin/activate
 ```
 
 Now install the required modules:
