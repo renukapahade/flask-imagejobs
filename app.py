@@ -49,7 +49,7 @@ def create_job():
 # GET request function to get the status of a job
 # on the terminal type: curl http://127.0.0.1:5000/api/status?jobid=123
 # this returns the status of the job completed/ongoing etc
-@app.route('/api/status', methods=['GET'])
+@app.route('/api/status', methods=['GET'], strict_slashes=False)
 def get_job_status():
     job_id = request.args.get('jobid')
     if(job_id):
@@ -68,7 +68,7 @@ def get_job_status():
 # GET request function to get the store visiting info
 # on the terminal type: curl http://127.0.0.1:5000/api/visits?area=abc&storeid=S00339218&startdate=stdate&enddate=endate
 # this returns the store visiting info store details, date of visit, total perimeter of the images submited
-@app.route('/api/visits', methods=['GET'])
+@app.route('/api/visits', methods=['GET'], strict_slashes=False)
 def get_visit_info():
 
     return jsonify({

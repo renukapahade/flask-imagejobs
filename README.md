@@ -50,7 +50,7 @@ $ python3 db_create.py
 Once the databse tables are created. You can now launch the app:
 
 ```
-$ python3 application.py
+$ python3 app.py
 ```
 
 
