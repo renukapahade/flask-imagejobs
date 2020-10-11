@@ -23,6 +23,7 @@ class SqlDbConnect():
             else:
                 engine = create_engine("mysql+pymysql://%s:%s@%s:%s"
                                     % (config_object.sql_username,config_object.sql_password,config_object.sql_db_host,config_object.sql_db_port), echo=False)
+            self.engine = engine
             self.sql_db = engine.connect()
         except Exception as e:
             print(e)
