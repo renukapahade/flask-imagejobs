@@ -16,7 +16,7 @@ def create_db():
         pass
 
 """Create table store if not exists"""
-def create_db_table():
+def create_store_db_table():
     try:
         query = """CREATE TABLE retail_store.store (
                 id VARCHAR(200) NOT NULL PRIMARY KEY,
@@ -51,6 +51,63 @@ def insert_data():
         print(inst.args)     # arguments stored in .args
         pass
 
+"""Create table job if not exists"""
+def create_job_db_table():
+    try:
+        query = """CREATE TABLE retail_store.job (
+                id INT NOT NULL AUTO_INCREMENT,
+                status TINYINT NOT NULL DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`)
+                );"""
+        sql_database_object.sql_db.execute(query)
+    except Exception as inst:
+        print(type(inst))    # the exception instance
+        print(inst.args)     # arguments stored in .args
+        print(inst)
+        pass
+
+
+"""Create table store_job if not exists"""
+def create_store_job_db_table():
+    try:
+        query = """CREATE TABLE retail_store.store_job (
+                id INT NOT NULL AUTO_INCREMENT,
+                job_id INT NOT NULL,
+                store_id VARCHAR(200) NOT NULL,
+                image_url VARCHAR(200) NOT NULL,
+                status TINYINT NOT NULL DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`)
+                );"""
+        sql_database_object.sql_db.execute(query)
+    except Exception as inst:
+        print(type(inst))    # the exception instance
+        print(inst.args)     # arguments stored in .args
+        print(inst)
+        pass
+
+"""Create table store_perimeter if not exists"""
+def create_store_perimeter_db_table():
+    try:
+        query = """CREATE TABLE retail_store.store_perimeter (
+                id INT NOT NULL AUTO_INCREMENT,
+                store_id VARCHAR(200) NOT NULL,
+                perimeter INT NULL,
+                date DATETIME NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`)
+                );"""
+        sql_database_object.sql_db.execute(query)
+    except Exception as inst:
+        print(type(inst))    # the exception instance
+        print(inst.args)     # arguments stored in .args
+        print(inst)
+        pass
+
 
 # create database and insert values
 if __name__ == '__main__':
@@ -59,7 +116,10 @@ if __name__ == '__main__':
     sql_database_object = SqlDbConnect(config_obj)
 
     create_db()
-    create_db_table()
+    create_store_db_table()
+    create_job_db_table()
+    create_store_job_db_table()
+    create_store_perimeter_db_table()
     insert_data()
 
 
