@@ -33,24 +33,54 @@ Now install the required modules:
 $ pip3 install -r requirements.txt
 ```
 
+
 ## Database setup
 
 Setup MySQL on the system.
-To play with the app right away, you can use a local database. Edit config.py by commenting out the AWS URL and uncomment this line:
+To play with the app right away, you can use a local database. Edit config.py by adding your MySQL configuration details.
 ```
-SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
+sql_db_host = "localhost"
+sql_db_name = "retail_store"
+sql_username = "root"
+sql_password = "password"
+sql_db_port = "3306"
 ```
 Next run:
 ```
 $ python3 db_create.py
 ```
 
-## Launch app server
 
-Once the databse tables are created. You can now launch the app:
+## Redis setup
 
+Make sure that the redis is installed and running on your sytem
+If you're on MAC you can install it with homebrew
+```
+$ brew install redis
+```
+
+Start Redis server via “launchctl”.
+```
+$ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+```
+
+Test if Redis server is running. If it replies “PONG”, then it’s good to go!
+```
+$ redis-cli ping
+```
+
+## Launch flask app server
+
+Once the databse tables are created, redis is running. You can now launch the flask app:
 ```
 $ python3 app.py
+```
+
+## Launch celery app
+
+Start the Celery workers
+```
+$ celery -A app.celery worker --pool=solo --loglevel=INFO
 ```
 
 
@@ -64,7 +94,6 @@ $ python3 app.py
 
 ```
 server   :     http://localhost:5000
-database :     http://localhost:3306
 ```
 
 ## File structure
