@@ -9,23 +9,22 @@ from flask import Flask, jsonify, request
 # import database settings
 from config import *
 from db_connection import *
+
+# import celery dependencies
 from flask_celery import *
 from image_processing import *
 
+
 # connect to the database and send back the connection instance
-
-
 def mysql_connect():
     config_obj = Config()
     sql_database_object = SqlDbConnect(config_obj, config_obj.sql_db_name)
     return sql_database_object
 
 
-# creating a Celery instance
-# celery = Celery(broker='redis://localhost:6379/0')
-
 # creating a Flask app
 app = Flask(__name__)
+
 
 # add celery to the application
 app.config.update(
@@ -34,8 +33,9 @@ app.config.update(
 )
 celery = make_celery(app)
 
-
 # create the async image processing task with celery
+
+
 @celery.task(name='image.processing')
 def processing(job_id, visits):
     image_processing_obj = ImageProcessing(job_id, visits)
