@@ -77,6 +77,7 @@ def create_store_job_db_table():
                 job_id INT NOT NULL,
                 store_id VARCHAR(200) NOT NULL,
                 image_url VARCHAR(200) NOT NULL,
+                visit_time DATETIME NOT NULL,
                 status TINYINT NOT NULL DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
