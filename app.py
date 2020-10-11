@@ -1,6 +1,16 @@
-# Using flask to make an api
+# This file is the entry point to the server
+# Using flask to make an API server
+
 # import necessary libraries and functions
 from flask import Flask, jsonify, request, Response
+
+# import database settings
+from config import *
+from db_connection import *
+
+#create the database connection
+config_obj = Config()
+sql_database_object = SqlDbConnect(config_obj)
 
 # creating a Flask app
 app = Flask(__name__)

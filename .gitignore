@@ -1,2 +1,3 @@
 .pyc
 flask-imagejobs/
+__pycache__/
