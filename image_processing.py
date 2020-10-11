@@ -26,6 +26,7 @@ class ImageProcessing():
         # connect to database
         config_obj = Config()
         sql_database_object = SqlDbConnect(config_obj, config_obj.sql_db_name)
+        store_job_failed_count = 0
 
         # insert the new store jobs record in database
         for store in self.visits:
@@ -48,6 +49,7 @@ class ImageProcessing():
                         2*(width + height)
                 except urllib.error.URLError:
                     storeProcessFailed = True
+                    store_job_failed_count = store_job_failed_count + 1
                     update_query = "UPDATE retail_store.store_job SET status=2 where job_id='" + \
                         str(self.job_id)+"' and store_id='" + \
                         store['store_id']+"';"
@@ -68,8 +70,10 @@ class ImageProcessing():
                     store['visit_time'] + "' );"
                 sql_database_object.sql_db.execute(
                     insert_store_perimeter_query)
-        # update job table set status=1 completed
-        update_job_query = "UPDATE retail_store.job SET status=1 where id='" + \
+        # update job table set status=1 completed, status=2 failed, 0 default ongoing
+        job_completion_status = 2 if store_job_failed_count > 0 else 1
+        print(store_job_failed_count)
+        update_job_query = "UPDATE retail_store.job SET status="+str(job_completion_status)+" where id='" + \
             str(self.job_id)+"';"
         sql_database_object.sql_db.execute(update_job_query)
 

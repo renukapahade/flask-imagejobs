@@ -82,17 +82,14 @@ def create_job():
                             "','"+store['visit_time']+"'),"
                 # To remove , from the EOL and add ; to complete the SQL syntax
                 insert_query = insert_query[:-1]+";"
-                store_job_result = conn.sql_db.execute(insert_query)
+                conn.sql_db.execute(insert_query)
 
                 # close the db connection
                 conn.sql_db.invalidate()
                 conn.engine.dispose()
 
                 # run async image processing tasks
-                # async_obj = AsyncJob(job_id,request_data['visits'])
-                # async_obj.process()
-                async_result = processing.delay(job_id, request_data['visits'])
-                # async_result.wait()
+                processing.delay(job_id, request_data['visits'])
 
                 # return the response
                 response = jsonify({
@@ -116,10 +113,45 @@ def create_job():
 def get_job_status():
     job_id = request.args.get('jobid')
     if(job_id):
-        return jsonify({
-            "status": "completed",
-            "job_id": ""
-        })
+
+        try:
+            conn = mysql_connect()
+            select_query = "SELECT * from job where id='"+str(job_id)+"';"
+            select_job_result = conn.sql_db.execute(select_query)
+            status = select_job_result.first()[1]
+            if status == 1:
+                status_message = "completed"
+            elif status == 2:
+                status_message = "failed"
+                select_failed_store_jobs = "SELECT store_id from store_job where job_id='" + \
+                    str(job_id)+"' and status=2 group by store_id;"
+                select_failed_store_jobs_result = conn.sql_db.execute(
+                    select_failed_store_jobs)
+                err_msg = "Image not found/processing error"
+                failed_stores = [{"store_id": row.store_id, "error": err_msg}
+                                 for row in select_failed_store_jobs_result]
+                # status = "failed" if select_job_result
+                return jsonify({
+                    "status": status_message,
+                    "job_id": job_id,
+                    "error": failed_stores
+                })
+            else:
+                status_message = "ongoing"
+
+            # close the db connection
+            conn.sql_db.invalidate()
+            conn.engine.dispose()
+            # status = "completed" if select_job_result
+            return jsonify({
+                "status": status_message,
+                "job_id": job_id
+            })
+        except TypeError:
+            # if jobid is not found
+            response = jsonify({})
+            response.status_code = 400
+            return response
     else:
         # if jobid is not in the request
         response = jsonify({
