@@ -1,6 +1,7 @@
 """
-This module gets all the environment variables (retrieve it from the .env file in production)
+This module gets all the environment variables (retrieve it from the .env file if running in production)
 """
+
 
 class Config():
     """

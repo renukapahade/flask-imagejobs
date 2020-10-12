@@ -1,3 +1,7 @@
+"""
+This module takes the flask app instance and returns the celery wrapper instance
+"""
+# import the dependencies
 from celery import Celery
 
 

@@ -5,6 +5,8 @@ from config import *
 from db_connection import *
 
 """Create database retail_store if not exists"""
+
+
 def create_db():
     try:
         query = "CREATE DATABASE IF NOT EXISTS retail_store;"
@@ -15,7 +17,10 @@ def create_db():
         print(inst)
         pass
 
+
 """Create table store if not exists"""
+
+
 def create_store_db_table():
     try:
         query = """CREATE TABLE retail_store.store (
@@ -32,7 +37,10 @@ def create_store_db_table():
         print(inst)
         pass
 
+
 """Insert values into table store if not exists"""
+
+
 def insert_data():
     try:
         openFile = open('StoreMasterAssignment.csv', 'r')
@@ -42,16 +50,20 @@ def insert_data():
         insert_query = 'INSERT IGNORE INTO retail_store.store (areacode,name,id) VALUES '
         for row in csvFile:
             values = map((lambda x: '"'+x+'"'), row)
-            insert_query = insert_query +"("+ ", ".join(values) +"),"
+            insert_query = insert_query + "(" + ", ".join(values) + "),"
         openFile.close()
-        insert_query = insert_query[:-1]+";"   # To remove , from the EOL and add ; to complete the SQL syntax
+        # To remove , from the EOL and add ; to complete the SQL syntax
+        insert_query = insert_query[:-1]+";"
         sql_database_object.sql_db.execute(insert_query)
     except Exception as inst:
         print(type(inst))    # the exception instance
         print(inst.args)     # arguments stored in .args
         pass
 
+
 """Create table job if not exists"""
+
+
 def create_job_db_table():
     try:
         query = """CREATE TABLE retail_store.job (
@@ -70,6 +82,8 @@ def create_job_db_table():
 
 
 """Create table store_job if not exists"""
+
+
 def create_store_job_db_table():
     try:
         query = """CREATE TABLE retail_store.store_job (
@@ -90,7 +104,10 @@ def create_store_job_db_table():
         print(inst)
         pass
 
+
 """Create table store_perimeter if not exists"""
+
+
 def create_store_perimeter_db_table():
     try:
         query = """CREATE TABLE retail_store.store_perimeter (
@@ -123,4 +140,5 @@ if __name__ == '__main__':
     create_store_perimeter_db_table()
     insert_data()
 
-
+# SET this to allow group by queries
+# SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));

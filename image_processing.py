@@ -1,8 +1,8 @@
 """
 This module run the image processing job asynchronously
 """
-# import necessary libraries and functions
-import time
+from random import randint
+from time import sleep
 import urllib.request
 import os
 from PIL import Image
@@ -47,6 +47,7 @@ class ImageProcessing():
                     width, height = current_image.size
                     total_store_perimeter = total_store_perimeter + \
                         2*(width + height)
+                    sleep(randint(1, 4)/10)
                 except urllib.error.URLError:
                     storeProcessFailed = True
                     store_job_failed_count = store_job_failed_count + 1
@@ -72,7 +73,8 @@ class ImageProcessing():
                     insert_store_perimeter_query)
         # update job table set status=1 completed, status=2 failed, 0 default ongoing
         job_completion_status = 2 if store_job_failed_count > 0 else 1
-        print(store_job_failed_count)
+        print("Number of failed stores for job:" +
+              str(self.job_id)+" ="+str(store_job_failed_count))
         update_job_query = "UPDATE retail_store.job SET status="+str(job_completion_status)+" where id='" + \
             str(self.job_id)+"';"
         sql_database_object.sql_db.execute(update_job_query)

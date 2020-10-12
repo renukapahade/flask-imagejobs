@@ -2,8 +2,11 @@
 
 A service implemented in Flask framework to process thousands of images collected from different stores.
 
-The service is implemented using the Flask framework, the REST API server is built using Flask and MySQL is used for storing the data.
+The service is implemented using the Flask framework, Celery, Redis and MySQL. The REST API server is built using Flask and MySQL is used for storing the data.
 
+Celery worker and the application/script are different processes and run independent of each other. Application/script and celery need some way to communicate with each other. For this Redis is used as a message queue.
+
+Application code puts the task in redis (as the message queue) from where celery worker fetches the task and executes it.
 
 ## How it works
 
@@ -109,7 +112,7 @@ requirements.txt     - Install the required modules to run the app
 
 POST  /api/submit/                             - Create a job to process the images collected from stores.
 GET   /api/status?jobid=123                    - Get Job Info
-GET   /api/visits?area=abc&storeid=S00339218   - Get the engagement rate (average time in seconds) by session
+GET   /api/visits?area=abc&storeid=S00339218   - Show Visit Info
       &startdate=stdate&enddate=endate        
 
 ```

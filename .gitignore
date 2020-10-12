@@ -3,3 +3,4 @@ flask-imagejobs/
 __pycache__/
 .Python
 downloads/
+.vscode/
