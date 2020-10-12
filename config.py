@@ -15,8 +15,16 @@ class Config():
 
     def __init__(self):
         # Load expected variables into different variables
+        # comment if using test.py
         self.sql_db_host = "localhost"
         self.sql_db_name = "retail_store"
         self.sql_username = "root"
         self.sql_password = "password"
         self.sql_db_port = "3306"
+
+        # uncomment if using test.py
+        # self.sql_db_host = "localhost"
+        # self.sql_db_name = "retail_store_test"
+        # self.sql_username = "root"
+        # self.sql_password = "password"
+        # self.sql_db_port = "3306"
