@@ -79,7 +79,7 @@ Once the databse tables are created, redis is running. You can now launch the fl
 $ python3 app.py
 ```
 
-## Launch celery app
+## Launch the celery worker
 
 Start the Celery workers
 ```
@@ -88,11 +88,18 @@ $ celery -A app.celery worker --pool=solo --loglevel=INFO
 
 
 ## Run tests
-
+Create the test database
 ```
-#Run the test command
+$ python3 create_db_test.py
 ```
-
+Change the config
+```
+Uncomment the test env configuration in file > config.py
+```
+Run the tests
+```
+$ python3 -m unittest test.py
+```
 ## By default
 
 ```
@@ -103,6 +110,13 @@ server   :     http://localhost:5000
 
 ```
 app.py               - Launch flask app 
+config.py            - Configuration setiings of app 
+create_db.py         - Development DB schema
+create_db_test.py    - Test DB schema
+db_connection.py     - Connect to MySQL database
+flask_celery.py      - Create the Celery instance
+image_processing.py  - Logic of the async image processing tasks
+downloads/           - Directory to store the images of the running jobs
 requirements.txt     - Install the required modules to run the app
 ```
 
